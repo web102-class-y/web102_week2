@@ -13,17 +13,19 @@ function App() {
   const cardRef = useRef(null);                  // 用来调用 Card 的 reset()
 
   const handleForward = () => {
-    if (bank.length === 0) return;
+    // 不在最新卡：沿 history 往“更新”方向走一格，不抽新卡
     if (nowIndex > 0) {
-      setNowIndex(Math.max(0, nowIndex - 1));
+      setNowIndex(nowIndex - 1);
+      cardRef.current?.reset();
+      return;
     }
 
-
+    // 已经在最新卡：抽一张全新的随机卡
+    if (bank.length === 0) return;
     const i = Math.floor(Math.random() * bank.length);
     const picked = bank[i];
-    setBank(bank.filter((_, idx) => idx !== i)); 
+    setBank(bank.filter((_, idx) => idx !== i));
     setHistory([picked, ...history]);
-
     setNowIndex(0);
     cardRef.current?.reset();
   };
@@ -59,7 +61,7 @@ function App() {
           Back
         </button>
         <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
-        <button onClick={handleForward} disabled={bank.length === 0}>
+        <button onClick={handleForward} disabled={nowIndex === 0 && bank.length === 0}>
           Next
         </button>
       </div>
