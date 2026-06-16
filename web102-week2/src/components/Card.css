@@ -6,6 +6,21 @@
   cursor: pointer;
   margin: 10px;
 }
+
+.card-enter {
+  animation: card-enter 0.3s ease;
+}
+
+@keyframes card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 .card-inner {
   position: relative;
   display: grid;            /* 用 grid 把两面叠在一起，替代原来的 width/height: 100% */
