@@ -37,11 +37,17 @@ function App() {
 
   return (
     <>
+      <header className="card-set-header">
+        <h1>Cybersecurity Auditd Review</h1>
+        <p>Study Linux auditd and host-based intrusion detection concepts.</p>
+        <p>Total cards: {questions.length}</p>
+      </header>
+
       <div style={{ height: "400px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
         {current ? (
           <Card title={current.title} answer={current.answer} />
         ) : (
-          <p>Error loading</p>
+          <p>Click "Next" to get started!!</p>
         )}
       </div>
 
