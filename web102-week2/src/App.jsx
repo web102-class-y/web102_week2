@@ -1,120 +1,59 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+
 import './App.css'
 
+import Card from './components/Card';
+
+import { questions } from './QuestionBank';
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [bank, setBank] = useState(questions);   // 剩余题库
+  const [history, setHistory] = useState([]);    // 看过的卡片，最新的在 index 0
+  const [nowIndex, setNowIndex] = useState(0);   // 当前显示 history 里的哪一张
+
+  const handleForward = () => {
+    if (bank.length === 0) return;                       // 题库空了就不抽
+    if (nowIndex > 0) {
+      setNowIndex(Math.max(0, nowIndex - 1));
+    }
+
+
+    const i = Math.floor(Math.random() * bank.length);   // 随机选一个下标
+    const picked = bank[i];
+    setBank(bank.filter((_, idx) => idx !== i));         // 从题库删除这一张
+    setHistory([picked, ...history]);                    // 加到 history 开头
+
+    setNowIndex(0);
+  };
+
+  const handleBack = () => {
+    if (nowIndex < history.length - 1) {
+      setNowIndex(nowIndex + 1);
+    }
+  };
+
+  const current = history[nowIndex];
+
 
   return (
     <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
+      <div style={{ height: "400px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        {current ? (
+          <Card title={current.title} answer={current.answer} />
+        ) : (
+          <p>Error loading</p>
+        )}
+      </div>
+
+      <div className="buttons">
+        <button onClick={handleBack} disabled={nowIndex >= history.length - 1}>
+          Back
         </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <button onClick={handleForward} disabled={bank.length === 0}>
+          Next
+        </button>
+      </div>
     </>
   )
 }
