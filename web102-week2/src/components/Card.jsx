@@ -3,9 +3,9 @@ import "./Card.css";
 
 const Card = forwardRef(({ title, answer }, ref) => {
   const [isFlipped, setIsFlipped] = useState(false);
-  const [entering, setEntering] = useState(true); // 首张卡挂载时也播放动画
+  const [entering, setEntering] = useState(true); // play the animation on the first card too
 
-  // 对外暴露 reset()：父组件换卡时调用 —— 翻回正面 + 触发入场动画
+  // Expose reset(): called by the parent on card change - flip back to front + replay enter animation
   useImperativeHandle(ref, () => ({
     reset() {
       setIsFlipped(false);

@@ -1,52 +1,55 @@
-# Web Development Project 2 - *Cybersecurity Auditd Review*
+# Web Development Project 3 - *Cybersecurity Auditd Review*
 
 Submitted by: **Haoyang Li**
 
-This web app: **A flashcard study app for reviewing Linux `auditd` and host-based intrusion detection concepts. Each card shows a cybersecurity question on the front, and clicking flips it to reveal the answer, and the Next button shows a random card from the set.**
+This web app: **A flashcard study app for reviewing Linux `auditd` and host-based intrusion detection concepts. Each card shows a cybersecurity question on the front; users type a guess and submit it for instant correct/incorrect feedback, can flip the card to reveal the answer, and navigate forward and back through the ordered set of cards. The app also tracks the user's current and longest streak of correct answers.**
 
-Time spent: **1** hours spent in total
+Time spent: **2** hours spent in total
 
 ## Required Features
 
 The following **required** functionality is completed:
 
-
-- [x] **The app displays the title of the card set, a short description, and the total number of cards**
-  - [x] Title of card set is displayed 
-  - [x] A short description of the card set is displayed 
-  - [x] A list of card pairs is created
-  - [x] The total number of cards in the set is displayed 
-  - [x] Card set is represented as a list of card pairs (an array of dictionaries where each dictionary contains the question and answer is perfectly fine)
-- [x] **A single card at a time is displayed**
-  - [x] Only one half of the information pair is displayed at a time
-- [x] **Clicking on the card flips the card over, showing the corresponding component of the information pair**
-  - [x] Clicking on a card flips it over, showing the back with corresponding information 
-  - [x] Clicking on a flipped card again flips it back, showing the front
-- [x] **Clicking on the next button displays a random new card**
+- [x] **The user can enter their guess into an input box *before* seeing the flipside of the card**
+  - Application features a clearly labeled input box with a submit button where users can type in a guess
+  - Clicking on the submit button with an **incorrect** answer shows visual feedback that it is wrong 
+  -  Clicking on the submit button with a **correct** answer shows visual feedback that it is correct
+- [x] **The user can navigate through an ordered list of cardss**
+  - A forward/next button displayed on the card navigates to the next card in a set sequence when clicked
+  - A previous/back button displayed on the card returns to the previous card in the set sequence when clicked
+  - Both the next and back buttons should have some visual indication that the user is at the beginning or end of the list (for example, graying out and no longer being available to click), not allowing for wrap-around navigation
 
 The following **optional** features are implemented:
 
-- [ ] Cards contain images in addition to or in place of text
-  - [ ] Some or all cards have images in place of or in addition to text
-- [ ] Cards have different visual styles such as color based on their category
-  - Example categories you can use:
-    - Difficulty: Easy/medium/hard
-    - Subject: Biology/Chemistry/Physics/Earth science
+
+- [ ] Users can use a shuffle button to randomize the order of the cards
+  - Cards should remain in the same sequence (**NOT** randomized) unless the shuffle button is clicked 
+  - Cards should change to a random sequence once the shuffle button is clicked
+- [ ] A user’s answer may be counted as correct even when it is slightly different from the target answer
+  - Answers are considered correct even if they only partially match the answer on the card 
+  - Examples: ignoring uppercase/lowercase discrepancies, ignoring punctuation discrepancies, matching only for a particular part of the answer rather than the whole answer
+- [x] A counter displays the user’s current and longest streak of correct responses
+  - The current counter increments when a user guesses an answer correctly
+  - The current counter resets to 0 when a user guesses an answer incorrectly
+  - A separate counter tracks the longest streak, updating if the value of the current streak counter exceeds the value of the longest streak counter 
+- [ ] A user can mark a card that they have mastered and have it removed from the pool of displayed cards
+  - The user can mark a card to indicate that it has been mastered
+  - Mastered cards are removed from the pool of displayed cards and added to a list of mastered cards
+
 
 The following **additional** features are implemented:
 
-* [x] A **Back button** with card history — previously seen cards are stored in a history list, so the user can navigate back to review earlier cards.
-* [x] Buttons are **disabled** at the appropriate times (Back is disabled when there is no earlier card; Next is disabled once every card has been drawn from the bank).
-* [x] Drawn cards are removed from the question bank, so the same card is never shown twice until the set is exhausted.
+* [x] Cards flip with a CSS 3D animation, and a card-enter animation plays each time a new card is shown.
+* [x] Once a card is answered correctly, its input and submit button lock to prevent the streak from being inflated by repeated submissions.
 
 ## Video Walkthrough
 
-Here's a walkthrough of implemented required features:
+Here's a walkthrough of implemented user stories:
 
 <img src='https://github.com/web102-class-y/web102_week2/blob/main/web102-week2/demo.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 <!-- Replace this with whatever GIF tool you used! -->
-GIF created with ScreenToGIF
+GIF created with ScreenToGIF  
 <!-- Recommended tools:
 [Kap](https://getkap.co/) for macOS
 [ScreenToGif](https://www.screentogif.com/) for Windows
@@ -56,8 +59,9 @@ GIF created with ScreenToGIF
 
 Describe any challenges encountered while building the app.
 
-- Learned that calling a state-setting function during render causes an infinite re-render loop in React; state must be updated from event handlers or initialized lazily instead.
-- Building the CSS 3D flip effect required `perspective`, `transform-style: preserve-3d`, and `backface-visibility: hidden` working together.
+- Refactored the Part 1 random-draw navigation into index-based navigation through an ordered list so that Next/Back move through a fixed sequence without wrap-around.
+- Used `key={nowIndex}` on the guess form so it remounts and clears its input and feedback automatically whenever the card changes.
+- Avoided streak inflation by locking the guess form once a card is answered correctly.
 
 ## License
 
@@ -74,4 +78,3 @@ Describe any challenges encountered while building the app.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
